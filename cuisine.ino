@@ -59,24 +59,27 @@ void loop() {
     } while(0 < microwaveTime);
 
     microwaveStop();
-  } else {
-    sleep_cpu();
+
+    return;
   }
+
+  sleep_cpu();
 }
 
 void addMicrowaveTime() {
   sleep_disable();
 
-  if((millis() - lastInterrupt) < 500) {
+  if((millis() - lastInterrupt) < 600) {
     return;
   }
 
   microwaveTime += MICROWAVE_TIME;
+  printMicrowaveTime();
   lastInterrupt = millis();
 }
 
 void printMicrowaveTime() {
-  microwaveTimeMin = floor(microwaveTime/60);
+  microwaveTimeMin = floor(microwaveTime / 60);
   display.setBrightness(1, true);
   display.showNumberDecEx((microwaveTime - (microwaveTimeMin * 60)) + (microwaveTimeMin * 100), (0x80 >> 1), true, 4, 0);
 }
@@ -118,7 +121,7 @@ void microwaveStop() {
 void switchOvenPower() {
   sleep_disable();
 
-  if((millis() - lastInterrupt) < 500) {
+  if((millis() - lastInterrupt) < 1000) {
     return;
   }
 
@@ -129,4 +132,3 @@ void switchOvenPower() {
 
   lastInterrupt = millis();
 }
-
